@@ -1,18 +1,17 @@
 from django.conf.urls import patterns, include, url
 from rest_framework import routers, serializers, viewsets
-from clients import views as clientsViews
-from projects import views as projectsViews
+#from clients import views as clientsViews
+#from projects import views as projectsViews
+from tecnocrowd_backend import views
 from django.contrib import admin
 
 admin.autodiscover()
 
 router = routers.DefaultRouter()
-router.register(r'clients', clientsViews.ClientsViewSet)
-router.register(r'projects', projectsViews.ProjectViewSet)
-router.register(r'gallery', projectsViews.GalleryViewSet)
-router.register(r'images', projectsViews.ImageViewSet)
-router.register(r'projects/(\d{projectid})/gallery', projectsViews.GalleryViewSet)
-router.register(r'projects/(\d{projectid})/gallery/images', projectsViews.ImageViewSet)
+router.register(r'users', views.UsersViewSet, base_name='Users')
+router.register(r'users/(?P<user_id>)/projects/', views.ProjectsViewSet, base_name='Images')
+router.register(r'projects', views.ProjectsViewSet)
+router.register(r'projects/(?P<project_id>)/images/', views.ImagesViewSet, base_name='Images')
 
 urlpatterns = patterns('',
     # Examples:
