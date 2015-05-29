@@ -20,7 +20,9 @@ class UsersSerializer(serializers.HyperlinkedModelSerializer):
 class ProjectsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Projects
-        fields = ('name','tiny_description','description','motivation','owner','amount_project','category','valoration', 'created')
+        fields = ('name','tiny_description','description','motivation','owner','amount_project','category','valoration', 'created', 'ini_date', 'end_data')
+
+
 
 class ImagesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

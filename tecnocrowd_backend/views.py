@@ -78,6 +78,15 @@ class ProjectsViewSet(viewsets.ModelViewSet):
     queryset = Projects.objects.all()
     serializer_class = ProjectsSerializer
 
+    def list(self, request):
+        queryset = Users.objects.all()
+        serualizer = ProjectsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        return Response({'status':'only logued users can create projects'})
+
+
 class ImagesViewSet(viewsets.ModelViewSet):
     serializer_class = ImagesSerializer
 
