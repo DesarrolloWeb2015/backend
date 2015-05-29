@@ -7,11 +7,11 @@ from models import Projects, Users, Collaborations, Images, Items_budget
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import detail_route, list_route, permission_classes
+from rest_framework.permissions import AllowAny
 from serializer import UserSerializer, GroupSerializer, UsersSerializer, ProjectsSerializer, ImagesSerializer,Items_budgetSerializer, CollaborationsSerializer
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
-
 
 class UsersViewSet(viewsets.ModelViewSet):
     serializer_class = UsersSerializer
@@ -37,7 +37,7 @@ class UsersViewSet(viewsets.ModelViewSet):
             self.object = serializer.save(force_insert=True)
             self.post_save(self.object, created=True)
             self.object.save()
-            subject, from_email, to = 'validate account', 'tecnocrowd@auth.com', 'pablo.a.maximo@gmail.com'
+            subject, from_email, to = 'validate account', 'tecnocrowd@auth.com', request.DATA['email']
             text_content = "Gracias por registrarte en nuestra plataforma, por favor, valida tu cuenta"
             html_content = '<div>\
                                 <img src="http://daw02.aiocs.es/frontend/images/logo5.png" height="100"/>\
@@ -64,6 +64,15 @@ class UsersViewSet(viewsets.ModelViewSet):
                 obj.save()
                 return Response({'status':'validation complete'})
         return Response({'status': request.GET['c']})
+
+    @list_route(methods=['get'])
+    @permission_classes((AllowAny,))
+    def login_user(self, request):
+        usrLogin = get_object_or_404(Users,username=request.GET['username'], password=request.GET['password'])
+        if usrLogin:
+            serializer = UsersSerializer(usrLogin)
+            return Response(serializer.data)
+        return Response({'status':status.HTTP_400_BAD_REQUEST})
 
 class ProjectsViewSet(viewsets.ModelViewSet):
     queryset = Projects.objects.all()

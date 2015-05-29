@@ -8,10 +8,11 @@ from django.contrib import admin
 admin.autodiscover()
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UsersViewSet, base_name='Users')
+router.register(r'users', views.UsersViewSet)
 router.register(r'users/(?P<user_id>)/projects/', views.ProjectsViewSet, base_name='Images')
 router.register(r'projects', views.ProjectsViewSet)
 router.register(r'projects/(?P<project_id>)/images/', views.ImagesViewSet, base_name='Images')
+#router.register(r'users/(?P<user_id>)/projects/(?P<project_id>)', views.UserProjectsViewSet)
 
 urlpatterns = patterns('',
     # Examples:

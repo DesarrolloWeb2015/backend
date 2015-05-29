@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    #'rest_framework.authtoken',
+    'rest_framework.authtoken',
     'tecnocrowd_backend',
     'corsheaders',
 )
@@ -91,14 +91,22 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
-    )
+        #'rest_framework.permissions.BasicAuthentication',
+        #'rest_framework.permissions.SessionAuthentication',
+        #'rest_framework.permissions.TokenAuthentication',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        #'rest_framework.authentication.TokenAuthentication',
+    ),
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = False
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = False
 
 CORS_ORIGIN_WHITELIST = (
     'daw02.aiocs.es',
-    'http://localhost',
     'localhost',
 )
+
+AUTH_USER_MODEL = 'tecnocrowd_backend.Users'
